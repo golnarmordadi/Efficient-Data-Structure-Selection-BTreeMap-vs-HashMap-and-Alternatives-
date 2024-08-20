@@ -26,6 +26,12 @@ To mitigate this, consider using an alternative hashing algorithm for internal u
 * The default `HashMap` in Rust uses a secure hashing algorithm designed to prevent collision attacks, which can be important when dealing with potentially adversarial input.
 * For internal use cases where performance is critical and input is controlled (non-adversarial), you may want to use a faster, albeit less secure, hashing algorithm like `FxHash`. FxHash is maintained by Mozilla and used in the Firefox browser. It offers faster hashing but should never be used with untrusted input due to its lack of collision resistance.
 
+### 3- Additional Considerations
+
+* `Small Datasets:` Choose `BTreeMap` when dealing with a small number of items (typically fewer than 1,000) and when your keys are long, such as string `IDs`. In these cases, the `O(log N)` complexity translates to only a few levels deep, making direct comparison potentially faster than hashing a long string key.
+
+* `Memory Efficiency:` `BTreeMap` generally occupies less memory compared to `HashMap`, making it a better choice in memory-constrained environments or when working with a large number of small maps.
+
 #### Implementing `FxHashMap`
 To use `FxHashMap`, you can leverage the fxhash crate, which simplifies the creation of a `HashMap`.
 
